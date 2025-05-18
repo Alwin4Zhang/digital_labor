@@ -1,0 +1,23 @@
+# FROM python:3.8
+FROM docker-hub.tianhong.cn/library/python:3.8.13
+
+MAINTAINER "lingzhi"
+
+WORKDIR /usr/src/app
+
+# COPY requirements.txt ./
+
+COPY CentOS-Base.repo CentOS-local.repo /etc/yum.repos.d/
+
+COPY fonts/* /usr/share/fonts/
+
+COPY . .
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    rm -rf /var/cache/yum/ && \
+    yum clean all && \
+    yum --disablerepo=* --enablerepo=*-local install -y libreoffice libreoffice-headless && \
+    python3 -m pip install wheel -i http://nexus.tianhong.cn/repository/pypi/simple --trusted-host nexus.tianhong.cn && \
+    python3 -m pip install --no-cache-dir --user -r requirements.txt -i http://nexus.tianhong.cn/repository/pypi/simple --trusted-host nexus.tianhong.cn
+
+CMD ["python3", "api.py"]
