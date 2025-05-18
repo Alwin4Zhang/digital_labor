@@ -75,12 +75,9 @@ if __name__ == "__main__":
     created_name = "张三"
 
     file_name = "9.6.3.0.2 交通补贴发放规范.docx"
-    file_name = "6、超市门店员工岗位操作手册（花艺助理）1.pdf"
     doc_path = f"././test/test_files/{file_name}"
     
     # doc_path = "/Users/ucdteam/digital_labor/test/test_files/操作教程.pdf"
-    file_name = "中航科创-安哥拉工程项目税务测算模型_20200405.xlsx"
-    doc_path = "/Users/ucdteam/Downloads/中航科创-安哥拉工程项目税务测算模型_20200405.xlsx"
     test_pipeline(doc_path, 
                   file_name,
                   source, question_type, created_by, created_name,

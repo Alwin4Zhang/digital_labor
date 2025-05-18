@@ -190,25 +190,8 @@ def test_pipeline(filename):
 
 
 if __name__ == '__main__':
-    abs_path = "./test/test_files/6.1.2.1.1 超市DM选品规范.pdf"
-    abs_path = "./test/test_files/6、超市门店员工岗位操作手册（花艺助理）1.pdf"
-    
-    # abs_path= "/Users/ucdteam/Downloads/1222805483.pdf"
+
     abs_path = "/Users/ucdteam/Downloads/1223306972.pdf"
-    
-    abs_path = "/Users/ucdteam/Downloads/中航科创有限公司国内公务接待管理规定.pdf"
-    
-    # abs_path = "/Users/ucdteam/Downloads/yangshan96_my_data_set.tsv"
-    
-    # table_loader = TableLoader(
-    #     file_path=abs_path
-    # )
-    
-    # blocks = table_loader.blocks
-    
-    # abs_path = "/Users/ucdteam/Desktop/metrics.xlsx"
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-安哥拉工程项目税务测算模型_20200405.xlsx"
-    
     
     
     # excel_loader = TableLoader(
@@ -220,28 +203,7 @@ if __name__ == '__main__':
     #         # print(blk['markdown'])
             # wf.write(blk['markdown'] + "\n\n")
 
-    abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/附件1：管理类档案归档范围与保管期限表.docx"
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/附件.中航科创所属单位全面风险管理与内部控制体系建设指引.docx"
-
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/中航科创有限公司党委党建工作考核评价办法.pdf"
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/中航科创有限公司纪委向党委请示报告工作管理办法.pdf"
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/中航科创-安哥拉税收管理手册 - 税务场景_20200331.pdf"
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-badcase/中航科创-安哥拉税收管理手册 - 税务决策_20200331.pdf"
-
     # blocks = test_parse(abs_path)
-
-
-    
-    
-    # abs_path = "/Users/ucdteam/Downloads/中航科创-埃塞俄比亚EPC税务管理手册 - 税制介绍 - 20191219.pdf"
-    # pdf_loader = PDFLoader(
-    #     file_path=abs_path
-    # )
-    
-    # blocks = pdf_loader.blocks
-    # documents = commonchs_doc_splitter.split_text(blocks=blocks)
-
-    abs_path = "/Users/ucdteam/Downloads/解析失败文件/私域运营专员岗位手册.pdf"
 
     documents = test_pipeline(abs_path)
     
