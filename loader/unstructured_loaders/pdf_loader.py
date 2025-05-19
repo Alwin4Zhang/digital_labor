@@ -19,7 +19,10 @@ from copy import deepcopy
 from typing import List, Tuple, Dict, Optional, Any, Union, IO, AnyStr
 from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
-from multiprocessing import Pool, cpu_count,Manager
+import multiprocessing
+from multiprocessing import cpu_count,Manager # Pool
+from billiard import Pool
+from billiard.exceptions import WorkerLostError
 from time import perf_counter
 
 from pprint import pprint
@@ -105,8 +108,10 @@ class CustomConverter(Converter):
             for i in range(cpu)
         ]
         # start parsing processes
-        pool = Pool()
-        pool.map(self._parse_pages_per_cpu, vectors, 1)
+        # pool = Pool()
+        ctx = multiprocessing.get_context("spawn")
+        with ctx.Pool(processes=cpu) as pool:
+            pool.map(self._parse_pages_per_cpu, vectors, 1)
 
         # restore parsed page data
         for i in range(cpu):
@@ -399,6 +404,7 @@ class PDFLoader(FileLoader):
         if self.file_stream:
             file_obj = self.file_stream
         convertor.convert(docx_filename=file_obj, multi_processing=True)
+        # convertor.convert(docx_filename=file_obj)
         if self.file_stream:
             del self.file_stream
         for page in convertor._pages:

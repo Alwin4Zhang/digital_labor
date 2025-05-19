@@ -213,7 +213,8 @@ class FileLoader(object):
 
     def upload_file_with_idx(self, idx, filename, buffer_stream, width, height):
         """上传文件，并返回文件id"""
-        assert_url = upload_file(filename, buffer_stream)
+        # assert_url = upload_file(filename, buffer_stream)
+        assert_url = upload_file(filename, base64image=buffer_stream)
         return idx, assert_url, width, height
 
     def upload_files_parallel(self, image_pairs: List[tuple], max_workers=4):
@@ -223,8 +224,9 @@ class FileLoader(object):
         args_list = []
 
         for i, filename, base64_image, width, height in image_pairs:
-            buffer_stream = convert_base64_to_buffer(b64_data=base64_image)
-            args_list.append((i, filename, buffer_stream, width, height))
+            # buffer_stream = convert_base64_to_buffer(b64_data=base64_image)
+            # args_list.append((i, filename, buffer_stream, width, height))
+            args_list.append((i, filename, base64_image, width, height))
 
         return thread_parallel(
             self.upload_file_with_idx, args_list=args_list, max_workers=max_workers

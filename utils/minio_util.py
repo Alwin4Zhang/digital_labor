@@ -53,12 +53,13 @@ def upload_base64image(base64img,
     # 上传图片到Minio
     try:
         img_data = base64.b64decode(base64img)
-        minio_client.fput_object(
+        minio_client.put_object(
             bucket_name,
             object_name,
-            io.BytesIO(img_data),
+            data=io.BytesIO(img_data),
             length=-1, 
-            part_size=10 * 1024 * 1024, 
+            # part_size=10 * 1024 * 1024, 
+            part_size=5 * 1024 * 1024, 
             content_type=content_type
         )
         print(f"图片上传成功!")

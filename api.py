@@ -789,21 +789,58 @@ async def hello_world2(request: Request):
     logger.info(request.headers)
     return StringResponse(data='123')
 
+from mq.tasks import create_upload_file_task,add
+from fastapi.responses import JSONResponse
+from fastapi import status
+
+async def create_file_task(
+    question_type: str = Body(..., description="问题类型", example="人力"),
+    created_by: str = Body(..., description="创建人工号", example="157212"),
+    created_name: str = Body(..., description="创建人姓名", example="张三"),
+    source: str = Body(description="任务类型-文件解析or知识问答", default=FileSource.Document),
+    file: UploadFile = File(),
+    sprag_enhance: bool = Body(description="是否开启sprag", default=True),
+    request: Request = None
+):
+    file_name = file.filename
+    file_stream = io.BytesIO(await file.read())
+    await file.close()
+
+    task = create_upload_file_task.delay(
+        question_type=question_type,
+        created_by=created_by,
+        created_name=created_name,
+        source=source,
+        file_name=file_name,
+        file_stream=file_stream
+    )
+    return JSONResponse(
+        status_code=status.HTTP_202_ACCEPTED,
+        content={
+            "task_id": task.id,
+            "file_id": str(uuid.uuid4())
+        }
+    )
+
+async def hello(x,y):
+    task=add.delay(x,y)
+    return StringResponse(data=task.id)
+
 
 # def api_start(host, port):
 
 router = APIRouter()
 app = FastAPI()
 
-@app.middleware("http")
-async def add_request_header(request: Request, call_next):
-    # 链路追踪请求id
-    request_id = request.headers.get("X-B3-TraceId", str(uuid.uuid4()))
-    request_id_context.set(request_id)
-    response = await call_next(request)
-    response.headers["X-B3-TraceId"] = request_id
-    request_id_context.set(None)
-    return response
+# @app.middleware("http")
+# async def add_request_header(request: Request, call_next):
+#     # 链路追踪请求id
+#     request_id = request.headers.get("X-B3-TraceId", str(uuid.uuid4()))
+#     request_id_context.set(request_id)
+#     response = await call_next(request)
+#     response.headers["X-B3-TraceId"] = request_id
+#     request_id_context.set(None)
+#     return response
 
 app.add_middleware(
     CORSMiddleware,
@@ -812,6 +849,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+router.post("/local_doc_qa/hello2",response_model=StringResponse)(hello)
+
+router.post("/local_doc_qa/create_task",response_model=StringResponse)(create_file_task)
 
 router.get("/local_doc_qa/hello_world2", response_model=StringResponse)(hello_world2)
 
