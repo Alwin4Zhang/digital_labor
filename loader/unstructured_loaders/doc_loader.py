@@ -174,6 +174,8 @@ class DocLoader(FileLoader):
             image_rid = image_data.get("r:id")
             if not image_rid:
                 continue
+            if image_rid not in doc.part.rels:
+                continue
             rel = doc.part.rels[image_rid]
             image_stream = rel.target_part
             file_name = image_stream.filename
@@ -373,6 +375,8 @@ class DocLoader(FileLoader):
                                 "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed"
                             )
                             document_part = doc.part
+                            if not embed_attr or document_part or document_part.related_parts:
+                                continue
                             image_part = document_part.related_parts[embed_attr]
                             # TODO: base64 可能冗余
                             image_base64 = base64.b64encode(image_part._blob)

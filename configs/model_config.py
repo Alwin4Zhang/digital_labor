@@ -505,3 +505,14 @@ QA_PROMPT_NAME="qa_prompt" # QA生成提示词
 DOC_QA_PROMPT_TEMPLATE_NAME="doc_qa_prompt_template" # RAG问答提示词
 ACROSS_INTENT_PROMPT_NAME = "across_intent_prompt" # 对话是否跨意图提示词
 HYDE_PROMPT_NAME = "hyde_prompt" # HyDE提示词
+
+# 问题拆解模块
+QUERY_DECOMPOSITION_NAME = "query_decomposition_prompt"
+DECOMPOSED_QUESIONTS_TO_ANSWER_NAME = "decomposed_questions_to_answer_prompt"
+REASON_FINAL_ANSWER_NAME = "reason_final_answer_prompt"
+
+# 查询扩展，默认将问题扩展5个问题
+QUERY_EXPAND_NAME ="query_expand_prompt" 
+
+# 实体识别
+QUERY_EXTRACT_METADATA_FIELDS_NAME = "extract_metadata_field_prompt"
